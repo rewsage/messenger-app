@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"sourceMap": true,
+		"target": "ES6",
+		"jsx": "react",
+		"strict": true,
+		"allowJs": true,
+		"moduleResolution": "node",
+		"noImplicitReturns": true
+	},
+	"include": ["./src/**/*"]
+}
