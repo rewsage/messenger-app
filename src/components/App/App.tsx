@@ -1,11 +1,12 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { RouterProvider } from "react-router";
+import { router } from "../../routes";
 
 function App(): JSX.Element {
 	return (
-		<div>
-			<Button variant="outlined">Hello World</Button>
-		</div>
+		<>
+			<RouterProvider router={router} />
+		</>
 	);
 }
 
