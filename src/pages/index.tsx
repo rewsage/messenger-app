@@ -1,13 +1,13 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-import { Root } from "./root";
-import { Error } from "./error";
-import { Chat } from "./chat";
+import { Main } from "./Main";
+import { Error } from "./Error";
+import { Chat } from "./Main/Chat";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <Root />,
+		element: <Main />,
 		errorElement: <Error />,
 		children: [
 			{

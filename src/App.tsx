@@ -1,6 +1,6 @@
 import React from "react";
 import { RouterProvider } from "react-router";
-import { router } from "../../routes";
+import { router } from "./pages";
 
 function App(): JSX.Element {
 	return (
