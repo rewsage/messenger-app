@@ -6,8 +6,13 @@
 		"jsx": "react",
 		"strict": true,
 		"allowJs": true,
-		"moduleResolution": "node",
-		"noImplicitReturns": true
+		"noImplicitReturns": true,
+        "moduleResolution": "node",
+        "baseUrl": "./src",
+        "paths": {
+            "@/*": ["./*"]
+        }
 	},
-	"include": ["./src/**/*"]
+    "include": ["./src/**/*"]
 }
+

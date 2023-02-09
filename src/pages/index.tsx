@@ -2,7 +2,7 @@ import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 import { Main } from "./Main";
 import { Error } from "./Error";
-import { Chat } from "./Main/Chat";
+import { Chat } from "./Main/components/Chat";
 
 const router = createBrowserRouter([
 	{
