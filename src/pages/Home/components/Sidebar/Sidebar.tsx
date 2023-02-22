@@ -1,10 +1,11 @@
 import React from "react";
 import { useState } from "react";
-import { Drawer, List, Box } from "@mui/material";
-import { DrawerWidth } from "@/constants";
+import { Drawer, Box } from "@mui/material";
+import { DRAWER_WIDTH } from "@/utils";
+import { ChatList } from "../ChatList";
 
 function Sidebar(): JSX.Element {
-	const [drawerWidth, setDrawerWidth] = useState(DrawerWidth.default);
+	const [drawerWidth, setDrawerWidth] = useState(DRAWER_WIDTH.DEFAULT);
 
 	const handleMouseDown = (e: React.MouseEvent) => {
 		addEventListener("mousemove", handleMouseMove);
@@ -14,7 +15,7 @@ function Sidebar(): JSX.Element {
 
 	const handleMouseMove = (e: MouseEvent) => {
 		const mousePos = e.clientX;
-		if (mousePos < DrawerWidth.max && mousePos > DrawerWidth.min) {
+		if (mousePos < DRAWER_WIDTH.MAX && mousePos > DRAWER_WIDTH.MIN) {
 			setDrawerWidth(mousePos);
 		}
 	};
@@ -47,12 +48,7 @@ function Sidebar(): JSX.Element {
 				}}
 				onMouseDown={(e) => handleMouseDown(e)}
 			/>
-			<List>
-				<p>One</p>
-				<p>Two</p>
-				<p>Three</p>
-				<p>Four</p>
-			</List>
+			<ChatList />
 		</Drawer>
 	);
 }

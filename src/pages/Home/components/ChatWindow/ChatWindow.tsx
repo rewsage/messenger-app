@@ -1,7 +1,7 @@
 import React from "react";
 
-function Chat() {
+function ChatWindow() {
 	return <div>type smth</div>;
 }
 
-export { Chat };
+export { ChatWindow };
