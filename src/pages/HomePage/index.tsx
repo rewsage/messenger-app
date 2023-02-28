@@ -3,7 +3,7 @@ import { CssBaseline, Box } from "@mui/material";
 import { Outlet } from "react-router";
 import { Sidebar } from "./components/Sidebar";
 
-function Home(): JSX.Element {
+function HomePage(): JSX.Element {
 	return (
 		<Box sx={{ display: "flex" }}>
 			<CssBaseline />
@@ -15,4 +15,4 @@ function Home(): JSX.Element {
 	);
 }
 
-export { Home };
+export { HomePage };

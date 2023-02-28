@@ -1,7 +1,7 @@
 import React from "react";
 
-function Error(): JSX.Element {
+function ErrorPage(): JSX.Element {
 	return <div>Oops... Error occured!</div>;
 }
 
-export { Error };
+export { ErrorPage };
