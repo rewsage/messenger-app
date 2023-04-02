@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import { Typography, Box, Button, Link } from "@mui/material";
-import { Email as EmailIcon, Lock as LockIcon } from "@mui/icons-material";
-import { AuthForm } from "../AuthForm";
-import { auth } from "@/services";
+import { Box, Button, Link } from "@mui/material";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { Header } from "../Header";
+import { auth } from "@/services";
 import { Footer } from "../Footer";
+import { EmailForm } from "../Forms/EmailForm";
+import { PasswordForm } from "../Forms/PasswordForm";
+import { Header } from "../Header";
 
-function Login(): JSX.Element {
+interface LoginProps {
+	switchTab: () => void;
+}
+
+function Login({ switchTab }: LoginProps): JSX.Element {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
@@ -15,7 +19,7 @@ function Login(): JSX.Element {
 		event.preventDefault();
 		signInWithEmailAndPassword(auth, email, password)
 			.then(({ user }) => {
-				console.log(user);
+				console.log("User logged in: ", user);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -36,18 +40,11 @@ function Login(): JSX.Element {
 				onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
 					handleSubmit(e)
 				}>
-				<AuthForm
-					id="email"
-					label="Email"
-					icon={<EmailIcon />}
+				<EmailForm
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
 				/>
-				<AuthForm
-					id="password"
-					label="Password"
-					icon={<LockIcon />}
-					type="password"
+				<PasswordForm
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 				/>
@@ -71,6 +68,7 @@ function Login(): JSX.Element {
 				helperText="Don't have an account?"
 				onLinkClick={() => {
 					console.log(`You clicked on "Sign up" link`);
+					switchTab();
 				}}
 			/>
 		</>

@@ -1,5 +1,13 @@
 {
 	"useTabs": true,
 	"tabWidth": 4,
-	"bracketSameLine": true
+	"bracketSameLine": true,
+	"importOrder": [
+		"^react(.*)",
+		"^@ui/(.*)",
+		"<THIRD_PARTY_MODULES>",
+		"@/(.*)",
+		"^[./]"
+	],
+	"importOrderSortSpecifiers": true
 }

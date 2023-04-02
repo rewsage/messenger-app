@@ -1,17 +1,19 @@
-import { Box, Button } from "@mui/material";
-import {
-	Email as EmailIcon,
-	AccountCircle as AccountCircleIcon,
-	Lock as LockIcon,
-} from "@mui/icons-material";
-import { AuthForm } from "../AuthForm";
-import { auth } from "@/services";
-import { Header } from "../Header";
 import React, { useState } from "react";
+import { AccountCircle as AccountCircleIcon } from "@mui/icons-material";
+import { Box, Button } from "@mui/material";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/services";
 import { Footer } from "../Footer";
+import { AuthForm } from "../Forms/AuthForm";
+import { EmailForm } from "../Forms/EmailForm";
+import { PasswordForm } from "../Forms/PasswordForm";
+import { Header } from "../Header";
 
-function SignUp() {
+interface SignUpProps {
+	switchTab: () => void;
+}
+
+function SignUp({ switchTab }: SignUpProps) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 
@@ -48,20 +50,11 @@ function SignUp() {
 					placeholder="John"
 					icon={<AccountCircleIcon />}
 				/>
-				<AuthForm
-					id="email"
-					label="Email"
-					placeholder="john@mail.ru"
-					icon={<EmailIcon />}
+				<EmailForm
 					value={email}
 					onChange={(e) => setEmail(e.target.value)}
 				/>
-				<AuthForm
-					id="password"
-					label="Password"
-					placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
-					icon={<LockIcon />}
-					type="password"
+				<PasswordForm
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 				/>
@@ -74,6 +67,7 @@ function SignUp() {
 					helperText="Already have an account?"
 					onLinkClick={() => {
 						console.log(`You clicked on "Sign In" link`);
+						switchTab();
 					}}
 				/>
 			</Box>

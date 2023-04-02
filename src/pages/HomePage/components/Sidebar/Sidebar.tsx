@@ -1,6 +1,8 @@
 import React from "react";
 import { useState } from "react";
-import { Drawer, Box } from "@mui/material";
+import { Box, Button, Drawer } from "@mui/material";
+import { signOut } from "firebase/auth";
+import { auth } from "@/services";
 import { DRAWER_WIDTH } from "@/utils";
 import { ChatList } from "../ChatList";
 
@@ -49,6 +51,13 @@ function Sidebar(): JSX.Element {
 				onMouseDown={(e) => handleMouseDown(e)}
 			/>
 			<ChatList />
+
+			<Button
+				variant="text"
+				color="primary"
+				onClick={() => signOut(auth)}>
+				Sign out
+			</Button>
 		</Drawer>
 	);
 }

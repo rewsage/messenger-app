@@ -2,4 +2,5 @@ dist
 public
 webpack.config.js
 *.html
-/*.json
+package.json
+package-lock.json

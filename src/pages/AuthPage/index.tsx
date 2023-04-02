@@ -1,9 +1,11 @@
+import React, { useState } from "react";
+import { Box, Container, CssBaseline } from "@mui/material";
 import { Login } from "./components";
 import { SignUp } from "./components";
-import React from "react";
-import { Container, CssBaseline, Box } from "@mui/material";
 
 function AuthPage() {
+	const [tabName, setTabName] = useState("LogIn");
+
 	return (
 		<>
 			<CssBaseline />
@@ -29,7 +31,11 @@ function AuthPage() {
 							borderRadius: 2,
 							p: 3,
 						}}>
-						<SignUp />
+						{tabName === "SignUp" ? (
+							<SignUp switchTab={() => setTabName("LogIn")} />
+						) : (
+							<Login switchTab={() => setTabName("SignUp")} />
+						)}
 					</Box>
 				</Box>
 			</Container>
