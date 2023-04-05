@@ -2,9 +2,11 @@ import React from "react";
 import {
 	FormControl,
 	FormControlProps,
+	FormHelperText,
 	InputAdornment,
 	InputLabel,
 	OutlinedInput,
+	OutlinedInputProps,
 } from "@mui/material";
 import { styled } from "@mui/material";
 
@@ -21,31 +23,18 @@ const StyledFormControl = styled(FormControl)<FormControlProps>(
 	})
 );
 
-interface AuthFormProps {
-	id: string;
+interface AuthFormProps extends OutlinedInputProps {
+	name?: string;
 	label?: string;
-	placeholder?: string;
 	icon?: JSX.Element | string;
-	type?: string | undefined;
-	value?: string;
-	onChange?: (
-		e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-	) => void;
+	helperText?: string;
 }
 
-function AuthForm({
-	id,
-	label,
-	value,
-	onChange,
-	icon,
-	type,
-	placeholder,
-}: AuthFormProps) {
+function AuthForm({ name, label, icon, helperText, ...props }: AuthFormProps) {
 	return (
-		<StyledFormControl margin="dense" size="small">
+		<StyledFormControl margin="none" size="small">
 			<InputLabel
-				htmlFor={`${id} - input`}
+				htmlFor={`${name}-input`}
 				variant="standard"
 				sx={{
 					fontSize: 18,
@@ -54,16 +43,23 @@ function AuthForm({
 				{label}
 			</InputLabel>
 			<OutlinedInput
-				id={`${id} - input`}
-				type={type}
+				id={`${name}-input`}
+				name={name}
 				startAdornment={
 					<InputAdornment position="start">{icon}</InputAdornment>
 				}
 				sx={{ mt: 3 }}
-				placeholder={placeholder}
-				value={value}
-				onChange={onChange}
+				{...props}
 			/>
+			<FormHelperText
+				id={`${name}-input`}
+				error
+				sx={{
+					m: 0,
+					mb: 1,
+				}}>
+				{helperText ?? " "}
+			</FormHelperText>
 		</StyledFormControl>
 	);
 }

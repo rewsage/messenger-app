@@ -1,15 +1,8 @@
 import React from "react";
-import { AuthForm } from "../AuthForm";
 import { Lock as LockIcon } from "@mui/icons-material";
+import { AuthForm } from "../AuthForm";
 
-interface PasswordFormProps {
-	value?: string;
-	onChange?: (
-		e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-	) => void;
-}
-
-function PasswordForm({ value, onChange }: PasswordFormProps) {
+function PasswordForm({ ...props }) {
 	return (
 		<AuthForm
 			id="password"
@@ -17,8 +10,7 @@ function PasswordForm({ value, onChange }: PasswordFormProps) {
 			placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
 			icon={<LockIcon />}
 			type="password"
-			value={value}
-			onChange={onChange}
+			{...props}
 		/>
 	);
 }

@@ -1,24 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 import { AccountCircle as AccountCircleIcon } from "@mui/icons-material";
+import { Email as EmailIcon } from "@mui/icons-material";
+import { Lock as LockIcon } from "@mui/icons-material";
 import { Box, Button } from "@mui/material";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { Field, Formik } from "formik";
+import * as Yup from "yup";
 import { auth } from "@/services";
 import { Footer } from "../Footer";
 import { AuthForm } from "../Forms/AuthForm";
-import { EmailForm } from "../Forms/EmailForm";
-import { PasswordForm } from "../Forms/PasswordForm";
 import { Header } from "../Header";
 
 interface SignUpProps {
 	switchTab: () => void;
 }
 
-function SignUp({ switchTab }: SignUpProps) {
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
+interface FormValues {
+	username: string;
+	email: string;
+	password: string;
+}
 
-	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
+function SignUp({ switchTab }: SignUpProps) {
+	const initialValues: FormValues = { username: "", email: "", password: "" };
+
+	const handleSubmit = ({ email, password }: FormValues) => {
 		createUserWithEmailAndPassword(auth, email, password)
 			.then(({ user }) => {
 				console.log("New user have been registered: ", user);
@@ -35,42 +41,72 @@ function SignUp({ switchTab }: SignUpProps) {
 		<>
 			<Header title="sign up" subtitle="register new account" />
 
-			<Box
-				component="form"
-				sx={{
-					display: "flex",
-					flexDirection: "column",
-				}}
-				onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
-					handleSubmit(e)
-				}>
-				<AuthForm
-					id="username"
-					label="Username"
-					placeholder="John"
-					icon={<AccountCircleIcon />}
-				/>
-				<EmailForm
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-				/>
-				<PasswordForm
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-				/>
-				<Button type="submit" variant="contained" sx={{ mt: 3 }}>
-					Sign Up
-				</Button>
+			<Formik
+				initialValues={initialValues}
+				validationSchema={Yup.object({
+					username: Yup.string().max(
+						18,
+						"Must be 18 characters or less"
+					),
+					email: Yup.string()
+						.email("Invalid email address")
+						.required("Required"),
+					password: Yup.string()
+						.min(6, "Must be 6 characters or more")
+						.required("Required"),
+				})}
+				onSubmit={(values) => handleSubmit(values)}>
+				{({ errors, touched, handleSubmit }) => (
+					<Box
+						component="form"
+						sx={{
+							display: "flex",
+							flexDirection: "column",
+						}}
+						onSubmit={handleSubmit}>
+						<Field
+							name="username"
+							as={AuthForm}
+							label="Username"
+							placeholder="John"
+							icon={<AccountCircleIcon />}
+							error={touched.username && Boolean(errors.username)}
+							helperText={touched.username && errors.username}
+						/>
+						<Field
+							name="email"
+							as={AuthForm}
+							label="Email"
+							placeholder="john@gmail.com"
+							icon={<EmailIcon />}
+							error={touched.email && Boolean(errors.email)}
+							helperText={touched.email && errors.email}
+						/>
+						<Field
+							name="password"
+							as={AuthForm}
+							label="Password"
+							type="password"
+							placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
+							icon={<LockIcon />}
+							error={touched.password && Boolean(errors.password)}
+							helperText={touched.password && errors.password}
+						/>
+						<Button type="submit" variant="contained">
+							Sign Up
+						</Button>
+					</Box>
+				)}
+			</Formik>
 
-				<Footer
-					linkText="Sign in"
-					helperText="Already have an account?"
-					onLinkClick={() => {
-						console.log(`You clicked on "Sign In" link`);
-						switchTab();
-					}}
-				/>
-			</Box>
+			<Footer
+				linkText="Sign in"
+				helperText="Already have an account?"
+				onLinkClick={() => {
+					console.log(`You clicked on "Sign In" link`);
+					switchTab();
+				}}
+			/>
 		</>
 	);
 }

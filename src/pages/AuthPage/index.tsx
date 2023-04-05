@@ -4,7 +4,7 @@ import { Login } from "./components";
 import { SignUp } from "./components";
 
 function AuthPage() {
-	const [tabName, setTabName] = useState("LogIn");
+	const [tabName, setTabName] = useState("SignUp");
 
 	return (
 		<>
