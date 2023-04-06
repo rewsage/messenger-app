@@ -28,7 +28,7 @@ function Login({ switchTab }: LoginProps): JSX.Element {
 				console.log("User logged in: ", user);
 			})
 			.catch((error) => {
-				console.log(error);
+				console.log(error.message);
 				console.log("invalid credentials");
 			});
 	};
@@ -97,7 +97,6 @@ function Login({ switchTab }: LoginProps): JSX.Element {
 				linkText="Sign up"
 				helperText="Don't have an account?"
 				onLinkClick={() => {
-					console.log(`You clicked on "Sign up" link`);
 					switchTab();
 				}}
 			/>

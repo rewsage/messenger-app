@@ -103,7 +103,6 @@ function SignUp({ switchTab }: SignUpProps) {
 				linkText="Sign in"
 				helperText="Already have an account?"
 				onLinkClick={() => {
-					console.log(`You clicked on "Sign In" link`);
 					switchTab();
 				}}
 			/>
