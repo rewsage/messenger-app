@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Email as EmailIcon } from "@mui/icons-material";
 import { Lock as LockIcon } from "@mui/icons-material";
-import { Box, Button, Link } from "@mui/material";
+import { Box, Button, FormHelperText, Link } from "@mui/material";
+import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Field, Formik } from "formik";
 import * as Yup from "yup";
 import { auth } from "@/services";
+import { AUTH_ERROR_MESSAGES } from "@/utils";
+import { AuthForm } from "../AuthForm";
 import { Footer } from "../Footer";
-import { AuthForm } from "../Forms/AuthForm";
 import { Header } from "../Header";
 
 interface LoginProps {
@@ -21,16 +23,31 @@ interface FormValues {
 
 function Login({ switchTab }: LoginProps): JSX.Element {
 	const initialValues: FormValues = { email: "", password: "" };
+	const [submissionError, setSubissionError] = useState("");
 
-	const handleSubmit = ({ email, password }: FormValues) => {
-		signInWithEmailAndPassword(auth, email, password)
-			.then(({ user }) => {
-				console.log("User logged in: ", user);
-			})
-			.catch((error) => {
-				console.log(error.message);
-				console.log("invalid credentials");
-			});
+	const handleSubmit = async (
+		{ email, password }: FormValues,
+		setSubmiting: (isSubmitting: boolean) => void
+	) => {
+		try {
+			const { user } = await signInWithEmailAndPassword(
+				auth,
+				email,
+				password
+			);
+			console.log("User logged in: ", user);
+		} catch (err) {
+			if (
+				err instanceof FirebaseError &&
+				err.code in AUTH_ERROR_MESSAGES
+			) {
+				setSubissionError(AUTH_ERROR_MESSAGES[err.code]);
+			} else {
+				setSubissionError("Internal error occured on login.");
+			}
+		}
+
+		setSubmiting(false);
 	};
 
 	return (
@@ -45,8 +62,10 @@ function Login({ switchTab }: LoginProps): JSX.Element {
 						.required("Required"),
 					password: Yup.string().required("Required"),
 				})}
-				onSubmit={(values) => handleSubmit(values)}>
-				{({ errors, touched, handleSubmit }) => (
+				onSubmit={(values, { setSubmitting }) =>
+					handleSubmit(values, setSubmitting)
+				}>
+				{({ errors, touched, handleSubmit, isSubmitting }) => (
 					<Box
 						component="form"
 						sx={{
@@ -83,10 +102,13 @@ function Login({ switchTab }: LoginProps): JSX.Element {
 							}}>
 							Forgot password?
 						</Link>
+						<FormHelperText error sx={{ mb: "4px" }}>
+							{submissionError}
+						</FormHelperText>
 						<Button
 							type="submit"
 							variant="contained"
-							sx={{ mt: 3 }}>
+							disabled={isSubmitting}>
 							Sign In
 						</Button>
 					</Box>

@@ -1,3 +1,3 @@
-export * from "./Forms/AuthForm";
+export * from "./AuthForm";
 export * from "./Login";
 export * from "./SignUp";

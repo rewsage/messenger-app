@@ -30,7 +30,13 @@ interface AuthFormProps extends OutlinedInputProps {
 	helperText?: string;
 }
 
-function AuthForm({ name, label, icon, helperText, ...props }: AuthFormProps) {
+function AuthForm({
+	name,
+	label,
+	icon,
+	helperText,
+	...props
+}: AuthFormProps): JSX.Element {
 	return (
 		<StyledFormControl margin="none" size="small">
 			<InputLabel
@@ -56,7 +62,7 @@ function AuthForm({ name, label, icon, helperText, ...props }: AuthFormProps) {
 				error
 				sx={{
 					m: 0,
-					mb: 1,
+					mb: "4px",
 				}}>
 				{helperText ?? " "}
 			</FormHelperText>

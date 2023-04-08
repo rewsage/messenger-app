@@ -3,7 +3,7 @@ import { Box, Container, CssBaseline } from "@mui/material";
 import { Login } from "./components";
 import { SignUp } from "./components";
 
-function AuthPage() {
+function AuthPage(): JSX.Element {
 	const [tabName, setTabName] = useState("SignUp");
 
 	return (
