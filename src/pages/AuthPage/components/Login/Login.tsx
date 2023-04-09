@@ -4,16 +4,16 @@ import { Lock as LockIcon } from "@mui/icons-material";
 import { Box, Button, FormHelperText, Link } from "@mui/material";
 import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { Field, Formik } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import { auth } from "@/services";
-import { AUTH_ERROR_MESSAGES } from "@/utils";
-import { AuthForm } from "../AuthForm";
+import { AUTH_ERROR_MESSAGES, AuthTabs } from "@/utils";
+import { AuthField } from "../AuthField";
 import { Footer } from "../Footer";
 import { Header } from "../Header";
 
 interface LoginProps {
-	switchTab: () => void;
+	switchTab: (tabname: AuthTabs) => void;
 }
 
 interface FormValues {
@@ -65,7 +65,7 @@ function Login({ switchTab }: LoginProps): JSX.Element {
 				onSubmit={(values, { setSubmitting }) =>
 					handleSubmit(values, setSubmitting)
 				}>
-				{({ errors, touched, handleSubmit, isSubmitting }) => (
+				{({ handleSubmit, isSubmitting }) => (
 					<Box
 						component="form"
 						sx={{
@@ -73,24 +73,18 @@ function Login({ switchTab }: LoginProps): JSX.Element {
 							flexDirection: "column",
 						}}
 						onSubmit={handleSubmit}>
-						<Field
+						<AuthField
 							name="email"
-							as={AuthForm}
 							label="Email"
 							placeholder="john@gmail.com"
 							icon={<EmailIcon />}
-							error={touched.email && Boolean(errors.email)}
-							helperText={touched.email && errors.email}
 						/>
-						<Field
+						<AuthField
 							name="password"
-							as={AuthForm}
 							label="Password"
 							type="password"
 							placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
 							icon={<LockIcon />}
-							error={touched.password && Boolean(errors.password)}
-							helperText={touched.password && errors.password}
 						/>
 						<Link
 							component="button"
@@ -118,9 +112,7 @@ function Login({ switchTab }: LoginProps): JSX.Element {
 			<Footer
 				linkText="Sign up"
 				helperText="Don't have an account?"
-				onLinkClick={() => {
-					switchTab();
-				}}
+				onLinkClick={() => switchTab(AuthTabs.SignUp)}
 			/>
 		</>
 	);

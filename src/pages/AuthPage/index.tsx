@@ -1,10 +1,33 @@
 import React, { useState } from "react";
 import { Box, Container, CssBaseline } from "@mui/material";
+import { AuthTabs } from "@/utils";
 import { Login } from "./components";
 import { SignUp } from "./components";
 
 function AuthPage(): JSX.Element {
-	const [tabName, setTabName] = useState("SignUp");
+	const [tabName, setTabName] = useState<AuthTabs>(AuthTabs.Login);
+
+	const getCurrentTab = () => {
+		switch (tabName) {
+			case AuthTabs.Login: {
+				return (
+					<Login
+						switchTab={(tabName: AuthTabs) => setTabName(tabName)}
+					/>
+				);
+			}
+			case AuthTabs.SignUp: {
+				return (
+					<SignUp
+						switchTab={(tabName: AuthTabs) => setTabName(tabName)}
+					/>
+				);
+			}
+			case AuthTabs.PasswordResset: {
+				return null;
+			}
+		}
+	};
 
 	return (
 		<>
@@ -31,11 +54,7 @@ function AuthPage(): JSX.Element {
 							borderRadius: 2,
 							p: 3,
 						}}>
-						{tabName === "SignUp" ? (
-							<SignUp switchTab={() => setTabName("LogIn")} />
-						) : (
-							<Login switchTab={() => setTabName("SignUp")} />
-						)}
+						{getCurrentTab()}
 					</Box>
 				</Box>
 			</Container>

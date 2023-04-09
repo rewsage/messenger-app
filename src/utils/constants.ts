@@ -53,3 +53,9 @@ export const AUTH_ERROR_MESSAGES: AuthErrorMessages = {
 	"auth/weak-password": "The password must be 6 characters long or more.",
 	"auth/user-not-found": "The user doesn't exist.",
 };
+
+export enum AuthTabs {
+	Login,
+	SignUp,
+	PasswordResset,
+}

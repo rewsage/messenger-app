@@ -24,7 +24,7 @@ const StyledFormControl = styled(FormControl)<FormControlProps>(
 );
 
 interface AuthFormProps extends OutlinedInputProps {
-	name?: string;
+	name: string;
 	label?: string;
 	icon?: JSX.Element | string;
 	helperText?: string;
@@ -70,4 +70,4 @@ function AuthForm({
 	);
 }
 
-export { AuthForm };
+export { AuthForm, AuthFormProps };
