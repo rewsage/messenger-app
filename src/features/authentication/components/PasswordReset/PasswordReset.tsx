@@ -1,41 +1,38 @@
 import React, { useState } from "react";
 import { Email as EmailIcon } from "@mui/icons-material";
-import { Lock as LockIcon } from "@mui/icons-material";
-import { Box, Button, FormHelperText, Link } from "@mui/material";
+import { Box, Button, FormHelperText } from "@mui/material";
 import { FirebaseError } from "firebase/app";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { sendPasswordResetEmail } from "firebase/auth";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import {
+	AUTH_ERROR_MESSAGES,
+	AuthTabNames,
+} from "@/features/authentication/utils";
 import { auth } from "@/services";
-import { AUTH_ERROR_MESSAGES, AuthTabs } from "@/utils";
 import { AuthField } from "../AuthField";
 import { Footer } from "../Footer";
 import { Header } from "../Header";
 
-interface LoginProps {
-	switchTab: (tabname: AuthTabs) => void;
+interface PasswordProps {
+	switchTab: (name: AuthTabNames) => void;
 }
 
 interface FormValues {
 	email: string;
-	password: string;
 }
 
-function Login({ switchTab }: LoginProps): JSX.Element {
-	const initialValues: FormValues = { email: "", password: "" };
+function PasswordReset({ switchTab }: PasswordProps): JSX.Element {
+	const initialValues: FormValues = { email: "" };
 	const [submissionError, setSubissionError] = useState("");
 
 	const handleSubmit = async (
-		{ email, password }: FormValues,
+		{ email }: FormValues,
 		setSubmiting: (isSubmitting: boolean) => void
 	) => {
 		try {
-			const { user } = await signInWithEmailAndPassword(
-				auth,
-				email,
-				password
-			);
-			console.log("User logged in: ", user);
+			await sendPasswordResetEmail(auth, email);
+			console.log("Reset message was sent.");
 		} catch (err) {
 			if (
 				err instanceof FirebaseError &&
@@ -52,7 +49,10 @@ function Login({ switchTab }: LoginProps): JSX.Element {
 
 	return (
 		<>
-			<Header title="login" subtitle="sign in to your account" />
+			<Header
+				title="password reset"
+				subtitle="enter your email address"
+			/>
 
 			<Formik
 				initialValues={initialValues}
@@ -60,7 +60,6 @@ function Login({ switchTab }: LoginProps): JSX.Element {
 					email: Yup.string()
 						.email("Invalid email address")
 						.required("Required"),
-					password: Yup.string().required("Required"),
 				})}
 				onSubmit={(values, { setSubmitting }) =>
 					handleSubmit(values, setSubmitting)
@@ -79,23 +78,6 @@ function Login({ switchTab }: LoginProps): JSX.Element {
 							placeholder="john@gmail.com"
 							icon={<EmailIcon />}
 						/>
-						<AuthField
-							name="password"
-							label="Password"
-							type="password"
-							placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
-							icon={<LockIcon />}
-						/>
-						<Link
-							component="button"
-							type="button"
-							variant="body2"
-							alignSelf="start"
-							onClick={() => {
-								console.log("You forgot password!");
-							}}>
-							Forgot password?
-						</Link>
 						<FormHelperText error sx={{ mb: "4px" }}>
 							{submissionError}
 						</FormHelperText>
@@ -103,19 +85,18 @@ function Login({ switchTab }: LoginProps): JSX.Element {
 							type="submit"
 							variant="contained"
 							disabled={isSubmitting}>
-							Sign In
+							Reset password
 						</Button>
 					</Box>
 				)}
 			</Formik>
 
 			<Footer
-				linkText="Sign up"
-				helperText="Don't have an account?"
-				onLinkClick={() => switchTab(AuthTabs.SignUp)}
+				linkText="Return to login"
+				onLinkClick={() => switchTab(AuthTabNames.Login)}
 			/>
 		</>
 	);
 }
 
-export { Login };
+export { PasswordReset };

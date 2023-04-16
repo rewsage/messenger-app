@@ -7,12 +7,11 @@
 		"strict": true,
 		"allowJs": true,
 		"noImplicitReturns": true,
-        "moduleResolution": "node",
-        "baseUrl": "./src",
-        "paths": {
-            "@/*": ["./*"]
-        }
+		"moduleResolution": "node",
+		"baseUrl": "./src",
+		"paths": {
+			"@/*": ["./*"]
+		}
 	},
-    "include": ["./src"]
+	"include": ["./src"]
 }
-

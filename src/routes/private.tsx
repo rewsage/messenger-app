@@ -1,9 +1,8 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
+import { ChatWindow } from "@/features/chat";
+import { ErrorPage, HomePage } from "@/pages";
 import { PATHS } from "@/utils";
-import { HomePage } from "@/pages/HomePage";
-import { ErrorPage } from "@/pages/ErrorPage";
-import { ChatWindow } from "@/pages/HomePage/components";
 
 export const privateRoutes = [
 	{

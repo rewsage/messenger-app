@@ -2,8 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { Box, Button, Drawer } from "@mui/material";
 import { signOut } from "firebase/auth";
+import { DRAWER_WIDTH } from "@/features/chat/utils";
 import { auth } from "@/services";
-import { DRAWER_WIDTH } from "@/utils";
 import { ChatList } from "../ChatList";
 
 function Sidebar(): JSX.Element {

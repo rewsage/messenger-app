@@ -1,7 +1,7 @@
 import React from "react";
-import { CssBaseline, Box } from "@mui/material";
 import { Outlet } from "react-router";
-import { Sidebar } from "./components/Sidebar";
+import { Box, CssBaseline } from "@mui/material";
+import { Sidebar } from "@/features/chat/";
 
 function HomePage(): JSX.Element {
 	return (

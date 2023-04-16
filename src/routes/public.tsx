@@ -1,8 +1,7 @@
 import React from "react";
-import { PATHS } from "@/utils";
-import { AuthPage } from "@/pages/AuthPage";
-import { ErrorPage } from "@/pages/ErrorPage";
 import { Navigate } from "react-router-dom";
+import { AuthPage, ErrorPage } from "@/pages";
+import { PATHS } from "@/utils";
 
 export const publicRoutes = [
 	{
