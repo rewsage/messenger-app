@@ -1,21 +1,3 @@
-import {
-	Login,
-	PasswordReset,
-	SignUp,
-} from "@/features/authentication/components";
-
-export enum AuthTabNames {
-	Login,
-	SignUp,
-	PasswordReset,
-}
-
-export const AuthTabs = {
-	[AuthTabNames.Login]: Login,
-	[AuthTabNames.SignUp]: SignUp,
-	[AuthTabNames.PasswordReset]: PasswordReset,
-};
-
 interface AuthErrorMessages {
 	readonly [key: string]: string;
 }

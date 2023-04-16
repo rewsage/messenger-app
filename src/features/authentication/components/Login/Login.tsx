@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Email as EmailIcon } from "@mui/icons-material";
 import { Lock as LockIcon } from "@mui/icons-material";
 import { Box, Button, FormHelperText, Link } from "@mui/material";
@@ -6,27 +7,22 @@ import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import {
-	AUTH_ERROR_MESSAGES,
-	AuthTabNames,
-} from "@/features/authentication/utils";
+import { AUTH_ERROR_MESSAGES } from "@/features/authentication/utils";
 import { auth } from "@/services";
+import { PATHS } from "@/utils";
 import { AuthField } from "../AuthField";
 import { Footer } from "../Footer";
 import { Header } from "../Header";
-
-interface LoginProps {
-	switchTab: (name: AuthTabNames) => void;
-}
 
 interface FormValues {
 	email: string;
 	password: string;
 }
 
-function Login({ switchTab }: LoginProps): JSX.Element {
+function Login(): JSX.Element {
 	const initialValues: FormValues = { email: "", password: "" };
 	const [submissionError, setSubissionError] = useState("");
+	const navigate = useNavigate();
 
 	const handleSubmit = async (
 		{ email, password }: FormValues,
@@ -95,7 +91,7 @@ function Login({ switchTab }: LoginProps): JSX.Element {
 							variant="body2"
 							alignSelf="start"
 							onClick={() => {
-								switchTab(AuthTabNames.PasswordReset);
+								navigate(PATHS.PASSWORD_RESET);
 							}}>
 							Forgot password?
 						</Link>
@@ -115,7 +111,7 @@ function Login({ switchTab }: LoginProps): JSX.Element {
 			<Footer
 				linkText="Sign up"
 				helperText="Don't have an account?"
-				onLinkClick={() => switchTab(AuthTabNames.SignUp)}
+				onLinkClick={() => navigate(PATHS.SIGN_UP)}
 			/>
 		</>
 	);

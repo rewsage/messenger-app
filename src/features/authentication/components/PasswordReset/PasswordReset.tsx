@@ -1,30 +1,26 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Email as EmailIcon } from "@mui/icons-material";
 import { Box, Button, FormHelperText } from "@mui/material";
 import { FirebaseError } from "firebase/app";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import {
-	AUTH_ERROR_MESSAGES,
-	AuthTabNames,
-} from "@/features/authentication/utils";
+import { AUTH_ERROR_MESSAGES } from "@/features/authentication/utils";
 import { auth } from "@/services";
+import { PATHS } from "@/utils";
 import { AuthField } from "../AuthField";
 import { Footer } from "../Footer";
 import { Header } from "../Header";
-
-interface PasswordProps {
-	switchTab: (name: AuthTabNames) => void;
-}
 
 interface FormValues {
 	email: string;
 }
 
-function PasswordReset({ switchTab }: PasswordProps): JSX.Element {
+function PasswordReset(): JSX.Element {
 	const initialValues: FormValues = { email: "" };
 	const [submissionError, setSubissionError] = useState("");
+	const navigate = useNavigate();
 
 	const handleSubmit = async (
 		{ email }: FormValues,
@@ -93,7 +89,7 @@ function PasswordReset({ switchTab }: PasswordProps): JSX.Element {
 
 			<Footer
 				linkText="Return to login"
-				onLinkClick={() => switchTab(AuthTabNames.Login)}
+				onLinkClick={() => navigate(PATHS.LOGIN)}
 			/>
 		</>
 	);

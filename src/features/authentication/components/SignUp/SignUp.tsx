@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AccountCircle as AccountCircleIcon } from "@mui/icons-material";
 import { Email as EmailIcon } from "@mui/icons-material";
 import { Lock as LockIcon } from "@mui/icons-material";
@@ -7,18 +8,12 @@ import { FirebaseError } from "firebase/app";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import {
-	AUTH_ERROR_MESSAGES,
-	AuthTabNames,
-} from "@/features/authentication/utils";
+import { AUTH_ERROR_MESSAGES } from "@/features/authentication/utils";
 import { auth } from "@/services";
+import { PATHS } from "@/utils";
 import { AuthField } from "../AuthField";
 import { Footer } from "../Footer";
 import { Header } from "../Header";
-
-interface SignUpProps {
-	switchTab: (name: AuthTabNames) => void;
-}
 
 interface FormValues {
 	username: string;
@@ -26,9 +21,10 @@ interface FormValues {
 	password: string;
 }
 
-function SignUp({ switchTab }: SignUpProps): JSX.Element {
+function SignUp(): JSX.Element {
 	const initialValues: FormValues = { username: "", email: "", password: "" };
 	const [submissionError, setSubissionError] = useState("");
+	const navigate = useNavigate();
 
 	const handleSubmit = async (
 		{ email, password }: FormValues,
@@ -121,9 +117,7 @@ function SignUp({ switchTab }: SignUpProps): JSX.Element {
 			<Footer
 				linkText="Sign in"
 				helperText="Already have an account?"
-				onLinkClick={() => {
-					switchTab(AuthTabNames.Login);
-				}}
+				onLinkClick={() => navigate(PATHS.LOGIN)}
 			/>
 		</>
 	);

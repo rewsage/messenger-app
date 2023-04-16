@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
+import { Outlet } from "react-router-dom";
 import { Box, Container, CssBaseline } from "@mui/material";
-import { AuthTabNames, AuthTabs } from "@/features/authentication/utils";
 
 function AuthPage(): JSX.Element {
-	const [tabName, setTabName] = useState(AuthTabNames.Login);
-
 	return (
 		<>
 			<CssBaseline />
@@ -30,9 +28,7 @@ function AuthPage(): JSX.Element {
 							borderRadius: 2,
 							p: 3,
 						}}>
-						{AuthTabs[tabName]({
-							switchTab: (name) => setTabName(name),
-						})}
+						<Outlet />
 					</Box>
 				</Box>
 			</Container>
