@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Email as EmailIcon } from "@mui/icons-material";
-import { Box, Button, FormHelperText } from "@mui/material";
-import { FirebaseError } from "firebase/app";
+import { FormHelperText } from "@mui/material";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { AUTH_ERROR_MESSAGES } from "@/features/authentication/utils";
+import { useFormSubmission } from "@/features/authentication/hooks";
 import { auth } from "@/services";
 import { PATHS } from "@/utils";
-import { AuthField } from "../AuthField";
+import { EmailField } from "../Fields";
 import { Footer } from "../Footer";
+import { FormContainer } from "../FormContainer";
 import { Header } from "../Header";
+import { SubmitButton } from "../SubmitButton";
 
 interface FormValues {
 	email: string;
@@ -19,27 +19,14 @@ interface FormValues {
 
 function PasswordReset(): JSX.Element {
 	const initialValues: FormValues = { email: "" };
-	const [submissionError, setSubissionError] = useState("");
+	const submission = useFormSubmission();
 	const navigate = useNavigate();
 
 	const handleSubmit = async (
 		{ email }: FormValues,
 		setSubmiting: (isSubmitting: boolean) => void
 	) => {
-		try {
-			await sendPasswordResetEmail(auth, email);
-			console.log("Reset message was sent.");
-		} catch (err) {
-			if (
-				err instanceof FirebaseError &&
-				err.code in AUTH_ERROR_MESSAGES
-			) {
-				setSubissionError(AUTH_ERROR_MESSAGES[err.code]);
-			} else {
-				setSubissionError("Internal error occured on login.");
-			}
-		}
-
+		await submission.handler(() => sendPasswordResetEmail(auth, email));
 		setSubmiting(false);
 	};
 
@@ -61,29 +48,15 @@ function PasswordReset(): JSX.Element {
 					handleSubmit(values, setSubmitting)
 				}>
 				{({ handleSubmit, isSubmitting }) => (
-					<Box
-						component="form"
-						sx={{
-							display: "flex",
-							flexDirection: "column",
-						}}
-						onSubmit={handleSubmit}>
-						<AuthField
-							name="email"
-							label="Email"
-							placeholder="john@gmail.com"
-							icon={<EmailIcon />}
-						/>
+					<FormContainer onSubmit={handleSubmit}>
+						<EmailField />
 						<FormHelperText error sx={{ mb: "4px" }}>
-							{submissionError}
+							{submission.error}
 						</FormHelperText>
-						<Button
-							type="submit"
-							variant="contained"
-							disabled={isSubmitting}>
-							Reset password
-						</Button>
-					</Box>
+						<SubmitButton disabled={isSubmitting}>
+							reset password
+						</SubmitButton>
+					</FormContainer>
 				)}
 			</Formik>
 

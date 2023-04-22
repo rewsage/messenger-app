@@ -1,55 +1,37 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { AccountCircle as AccountCircleIcon } from "@mui/icons-material";
-import { Email as EmailIcon } from "@mui/icons-material";
-import { Lock as LockIcon } from "@mui/icons-material";
-import { Box, Button, FormHelperText } from "@mui/material";
-import { FirebaseError } from "firebase/app";
+import { AccountCircle } from "@mui/icons-material";
+import { FormHelperText } from "@mui/material";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { AUTH_ERROR_MESSAGES } from "@/features/authentication/utils";
+import { useFormSubmission } from "@/features/authentication/hooks";
 import { auth } from "@/services";
 import { PATHS } from "@/utils";
-import { AuthField } from "../AuthField";
+import { AuthField, EmailField, PasswordField } from "../Fields";
 import { Footer } from "../Footer";
+import { FormContainer } from "../FormContainer";
 import { Header } from "../Header";
+import { SubmitButton } from "../SubmitButton";
 
 interface FormValues {
-	username: string;
+	username?: string;
 	email: string;
 	password: string;
 }
 
 function SignUp(): JSX.Element {
 	const initialValues: FormValues = { username: "", email: "", password: "" };
-	const [submissionError, setSubissionError] = useState("");
+	const submission = useFormSubmission();
 	const navigate = useNavigate();
 
 	const handleSubmit = async (
 		{ email, password }: FormValues,
 		setSubmiting: (isSubmitting: boolean) => void
 	) => {
-		try {
-			const { user } = await createUserWithEmailAndPassword(
-				auth,
-				email,
-				password
-			);
-			console.log("User logged in: ", user);
-		} catch (err) {
-			if (
-				err instanceof FirebaseError &&
-				err.code in AUTH_ERROR_MESSAGES
-			) {
-				setSubissionError(AUTH_ERROR_MESSAGES[err.code]);
-			} else {
-				setSubissionError(
-					"Internal error occured during registration."
-				);
-			}
-		}
-
+		await submission.handler(() =>
+			createUserWithEmailAndPassword(auth, email, password)
+		);
 		setSubmiting(false);
 	};
 
@@ -75,42 +57,22 @@ function SignUp(): JSX.Element {
 					handleSubmit(values, setSubmitting)
 				}>
 				{({ handleSubmit, isSubmitting }) => (
-					<Box
-						component="form"
-						sx={{
-							display: "flex",
-							flexDirection: "column",
-						}}
-						onSubmit={handleSubmit}>
+					<FormContainer onSubmit={handleSubmit}>
 						<AuthField
 							name="username"
 							label="Username"
 							placeholder="John"
-							icon={<AccountCircleIcon />}
+							icon={<AccountCircle />}
 						/>
-						<AuthField
-							name="email"
-							label="Email"
-							placeholder="john@gmail.com"
-							icon={<EmailIcon />}
-						/>
-						<AuthField
-							name="password"
-							label="Password"
-							type="password"
-							placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
-							icon={<LockIcon />}
-						/>
+						<EmailField />
+						<PasswordField />
 						<FormHelperText error sx={{ mb: "4px" }}>
-							{submissionError}
+							{submission.error}
 						</FormHelperText>
-						<Button
-							type="submit"
-							variant="contained"
-							disabled={isSubmitting}>
-							Sign Up
-						</Button>
-					</Box>
+						<SubmitButton disabled={isSubmitting}>
+							sign up
+						</SubmitButton>
+					</FormContainer>
 				)}
 			</Formik>
 

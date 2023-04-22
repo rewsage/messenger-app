@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Email as EmailIcon } from "@mui/icons-material";
-import { Lock as LockIcon } from "@mui/icons-material";
-import { Box, Button, FormHelperText, Link } from "@mui/material";
-import { FirebaseError } from "firebase/app";
+import { FormHelperText, Link } from "@mui/material";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { AUTH_ERROR_MESSAGES } from "@/features/authentication/utils";
 import { auth } from "@/services";
 import { PATHS } from "@/utils";
-import { AuthField } from "../AuthField";
+import { useFormSubmission } from "../../hooks";
+import { EmailField, PasswordField } from "../Fields";
 import { Footer } from "../Footer";
+import { FormContainer } from "../FormContainer";
 import { Header } from "../Header";
+import { SubmitButton } from "../SubmitButton";
 
 interface FormValues {
 	email: string;
@@ -21,31 +20,16 @@ interface FormValues {
 
 function Login(): JSX.Element {
 	const initialValues: FormValues = { email: "", password: "" };
-	const [submissionError, setSubissionError] = useState("");
+	const submission = useFormSubmission();
 	const navigate = useNavigate();
 
 	const handleSubmit = async (
 		{ email, password }: FormValues,
 		setSubmiting: (isSubmitting: boolean) => void
 	) => {
-		try {
-			const { user } = await signInWithEmailAndPassword(
-				auth,
-				email,
-				password
-			);
-			console.log("User logged in: ", user);
-		} catch (err) {
-			if (
-				err instanceof FirebaseError &&
-				err.code in AUTH_ERROR_MESSAGES
-			) {
-				setSubissionError(AUTH_ERROR_MESSAGES[err.code]);
-			} else {
-				setSubissionError("Internal error occured on login.");
-			}
-		}
-
+		await submission.handler(() =>
+			signInWithEmailAndPassword(auth, email, password)
+		);
 		setSubmiting(false);
 	};
 
@@ -65,26 +49,9 @@ function Login(): JSX.Element {
 					handleSubmit(values, setSubmitting)
 				}>
 				{({ handleSubmit, isSubmitting }) => (
-					<Box
-						component="form"
-						sx={{
-							display: "flex",
-							flexDirection: "column",
-						}}
-						onSubmit={handleSubmit}>
-						<AuthField
-							name="email"
-							label="Email"
-							placeholder="john@gmail.com"
-							icon={<EmailIcon />}
-						/>
-						<AuthField
-							name="password"
-							label="Password"
-							type="password"
-							placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
-							icon={<LockIcon />}
-						/>
+					<FormContainer onSubmit={handleSubmit}>
+						<EmailField />
+						<PasswordField />
 						<Link
 							component="button"
 							type="button"
@@ -96,15 +63,12 @@ function Login(): JSX.Element {
 							Forgot password?
 						</Link>
 						<FormHelperText error sx={{ mb: "4px" }}>
-							{submissionError}
+							{submission.error}
 						</FormHelperText>
-						<Button
-							type="submit"
-							variant="contained"
-							disabled={isSubmitting}>
-							Sign In
-						</Button>
-					</Box>
+						<SubmitButton disabled={isSubmitting}>
+							sign in
+						</SubmitButton>
+					</FormContainer>
 				)}
 			</Formik>
 

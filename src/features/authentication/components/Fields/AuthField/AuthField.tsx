@@ -1,6 +1,6 @@
 import React from "react";
 import { useField } from "formik";
-import { AuthForm, AuthFormProps } from "../AuthForm";
+import { AuthForm, AuthFormProps } from "../../AuthForm";
 
 function AuthField(props: AuthFormProps) {
 	const [field, meta] = useField(props.name);
