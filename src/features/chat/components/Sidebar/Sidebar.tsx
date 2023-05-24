@@ -4,7 +4,7 @@ import { Box, Button, Drawer } from "@mui/material";
 import { signOut } from "firebase/auth";
 import { DRAWER_WIDTH } from "@/features/chat/utils";
 import { auth } from "@/services";
-import { ChatList } from "../ChatList";
+import { Conversations } from "../Conversations";
 
 function Sidebar(): JSX.Element {
 	const [drawerWidth, setDrawerWidth] = useState(DRAWER_WIDTH.DEFAULT);
@@ -50,7 +50,7 @@ function Sidebar(): JSX.Element {
 				}}
 				onMouseDown={(e) => handleMouseDown(e)}
 			/>
-			<ChatList />
+			<Conversations />
 
 			<Button
 				variant="text"

@@ -2,11 +2,12 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { AccountCircle } from "@mui/icons-material";
 import { FormHelperText } from "@mui/material";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useFormSubmission } from "@/features/authentication/hooks";
 import { auth } from "@/services";
+import { writeUserData } from "@/services/writeUserData";
 import { PATHS } from "@/utils";
 import { AuthField, EmailField, PasswordField } from "../Fields";
 import { Footer } from "../Footer";
@@ -15,7 +16,7 @@ import { Header } from "../Header";
 import { SubmitButton } from "../SubmitButton";
 
 interface FormValues {
-	username?: string;
+	username: string;
 	email: string;
 	password: string;
 }
@@ -26,13 +27,19 @@ function SignUp(): JSX.Element {
 	const navigate = useNavigate();
 
 	const handleSubmit = async (
-		{ email, password }: FormValues,
-		setSubmiting: (isSubmitting: boolean) => void
+		{ email, password, username }: FormValues,
+		setSubmitting: (isSubmitting: boolean) => void
 	) => {
-		await submission.handler(() =>
-			createUserWithEmailAndPassword(auth, email, password)
-		);
-		setSubmiting(false);
+		await submission.handler(async () => {
+			const { user } = await createUserWithEmailAndPassword(
+				auth,
+				email,
+				password
+			);
+			await writeUserData(user.uid, username, email);
+		});
+
+		setSubmitting(false);
 	};
 
 	return (

@@ -6,12 +6,13 @@ import { AUTH_ERROR_MESSAGES } from "../utils";
 type SubmissionHandler<T> = (authFunc: () => Promise<T>) => Promise<T>;
 
 function useFormSubmission() {
-	const [error, setError] = useState("");
+	const [error, setError] = useState<string | null>(null);
 
 	const handleSubmit: SubmissionHandler<UserCredential | void> = async (
 		authFunc
 	) => {
 		try {
+			setError(null);
 			return await authFunc();
 		} catch (err) {
 			if (
@@ -20,7 +21,7 @@ function useFormSubmission() {
 			) {
 				setError(AUTH_ERROR_MESSAGES[err.code]);
 			} else {
-				setError("Internal error occured during registration.");
+				setError("Internal error occured during submission.");
 			}
 		}
 	};

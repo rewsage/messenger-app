@@ -13,6 +13,7 @@ function useInitStatus() {
 
 		const listener = onAuthStateChanged(auth, (user) => {
 			dispatch(updateUser(user?.toJSON() as UserInfo));
+			console.log(user);
 
 			setTimeout(
 				() => setIsInit(true),

@@ -5,3 +5,9 @@ export enum PATHS {
 	PASSWORD_RESET = "/auth/reset",
 	HOME = "/home",
 }
+
+export enum DB_NODES {
+	USERS = "users/",
+	CHATS = "chats/",
+	CONVERSATIONS = "conversations/",
+}
