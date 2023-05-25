@@ -25,7 +25,6 @@ const StyledFormControl = styled(FormControl)<FormControlProps>(
 
 interface AuthFormProps extends OutlinedInputProps {
 	name: string;
-	label?: string;
 	icon?: JSX.Element | string;
 	helperText?: string;
 }
@@ -50,6 +49,7 @@ function AuthForm({
 			</InputLabel>
 			<OutlinedInput
 				id={`${name}-input`}
+				aria-describedby={`${name}-helper-text`}
 				name={name}
 				startAdornment={
 					<InputAdornment position="start">{icon}</InputAdornment>
@@ -58,7 +58,7 @@ function AuthForm({
 				{...props}
 			/>
 			<FormHelperText
-				id={`${name}-input`}
+				id={`${name}-helper-text`}
 				error
 				sx={{
 					m: 0,

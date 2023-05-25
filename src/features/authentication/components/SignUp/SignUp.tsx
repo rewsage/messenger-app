@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { AccountCircle } from "@mui/icons-material";
 import { FormHelperText } from "@mui/material";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useFormSubmission } from "@/features/authentication/hooks";
@@ -16,18 +16,18 @@ import { Header } from "../Header";
 import { SubmitButton } from "../SubmitButton";
 
 interface FormValues {
-	username: string;
+	nickname: string;
 	email: string;
 	password: string;
 }
 
 function SignUp(): JSX.Element {
-	const initialValues: FormValues = { username: "", email: "", password: "" };
+	const initialValues: FormValues = { nickname: "", email: "", password: "" };
 	const submission = useFormSubmission();
 	const navigate = useNavigate();
 
 	const handleSubmit = async (
-		{ email, password, username }: FormValues,
+		{ email, password, nickname }: FormValues,
 		setSubmitting: (isSubmitting: boolean) => void
 	) => {
 		await submission.handler(async () => {
@@ -36,7 +36,7 @@ function SignUp(): JSX.Element {
 				email,
 				password
 			);
-			await writeUserData(user.uid, username, email);
+			await writeUserData(user.uid, nickname, email);
 		});
 
 		setSubmitting(false);
@@ -49,10 +49,9 @@ function SignUp(): JSX.Element {
 			<Formik
 				initialValues={initialValues}
 				validationSchema={Yup.object({
-					username: Yup.string().max(
-						18,
-						"Must be 18 characters or less"
-					),
+					Nickname: Yup.string()
+						.max(18, "Must be 18 characters or less")
+						.required("Required"),
 					email: Yup.string()
 						.email("Invalid email address")
 						.required("Required"),
@@ -66,9 +65,9 @@ function SignUp(): JSX.Element {
 				{({ handleSubmit, isSubmitting }) => (
 					<FormContainer onSubmit={handleSubmit}>
 						<AuthField
-							name="username"
-							label="Username"
-							placeholder="John"
+							name="nickname"
+							label="Nickname"
+							placeholder="john"
 							icon={<AccountCircle />}
 						/>
 						<EmailField />

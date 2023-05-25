@@ -1,18 +1,22 @@
 import React from "react";
-import { useField } from "formik";
+import { FieldValidator, useField } from "formik";
 import { AuthForm, AuthFormProps } from "../../AuthForm";
 
-function AuthField(props: AuthFormProps) {
-	const [field, meta] = useField(props.name);
+interface AuthFieldProps extends AuthFormProps {
+	validate?: FieldValidator;
+}
+
+function AuthField({ name, validate, ...props }: AuthFieldProps) {
+	const [field, meta] = useField({ name, validate });
 
 	return (
 		<AuthForm
-			{...field}
-			{...props}
 			error={meta.touched && Boolean(meta.error)}
 			helperText={(meta.touched && meta.error) || undefined}
+			{...field}
+			{...props}
 		/>
 	);
 }
 
-export { AuthField };
+export { AuthField, AuthFieldProps };

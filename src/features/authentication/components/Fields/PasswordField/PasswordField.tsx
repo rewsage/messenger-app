@@ -1,8 +1,9 @@
 import React from "react";
 import { Lock } from "@mui/icons-material";
+import { OutlinedInputProps } from "@mui/material";
 import { AuthField } from "../AuthField";
 
-function PasswordField() {
+function PasswordField(props: OutlinedInputProps) {
 	return (
 		<AuthField
 			name="password"
@@ -10,6 +11,7 @@ function PasswordField() {
 			type="password"
 			placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
 			icon={<Lock />}
+			{...props}
 		/>
 	);
 }
