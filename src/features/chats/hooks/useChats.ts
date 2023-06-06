@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Unsubscribe, onValue, ref } from "firebase/database";
-import { useConversations } from "@/features/chat/hooks";
-import { Chat, Chats } from "@/features/chat/types";
+import { useAppDispatch } from "@/app/hooks";
+import { updateChats } from "@/features/chats";
+import { useConversations } from "@/features/chats/hooks";
+import { Chat } from "@/features/chats/types";
 import { db } from "@/services";
 import { DB_NODES } from "@/utils";
 
-function useChats(uid: string) {
-	const [chats, setChats] = useState<Chats>({});
-
-	const conversations = useConversations(uid);
+function useChats() {
+	const dispatch = useAppDispatch();
+	const conversations = useConversations();
 
 	useEffect(() => {
 		const chatListeners: Unsubscribe[] = [];
@@ -16,19 +17,7 @@ function useChats(uid: string) {
 
 		chatIds.forEach((chatId) => {
 			const listener = subscribeToChat(chatId, (data) => {
-				if (data) {
-					setChats((chats) => ({
-						...chats,
-						[chatId]: data,
-					}));
-				} else {
-					setChats((chats) => {
-						const chatsCopy = { ...chats };
-						delete chatsCopy[chatId];
-						return chatsCopy;
-					});
-				}
-
+				dispatch(updateChats({ chatId, data }));
 				console.log(chatId, data);
 			});
 
@@ -38,9 +27,7 @@ function useChats(uid: string) {
 		return () => {
 			chatListeners.forEach((listener) => listener());
 		};
-	}, [conversations]);
-
-	return chats;
+	}, [dispatch, conversations]);
 }
 
 function subscribeToChat(

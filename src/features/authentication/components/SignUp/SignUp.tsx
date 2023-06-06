@@ -49,8 +49,13 @@ function SignUp(): JSX.Element {
 			<Formik
 				initialValues={initialValues}
 				validationSchema={Yup.object({
-					Nickname: Yup.string()
-						.max(18, "Must be 18 characters or less")
+					nickname: Yup.string()
+						.matches(
+							/^\w+$/,
+							"Only latin letters, numbers and underscores are allowed"
+						)
+						.max(20, "Must be less than 20 characters")
+						.min(3, "Must be more than 3 characters")
 						.required("Required"),
 					email: Yup.string()
 						.email("Invalid email address")

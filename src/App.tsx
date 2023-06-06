@@ -1,19 +1,12 @@
 import React from "react";
-import { CircularProgress } from "@mui/material";
+import { Loading } from "@/components";
+import { useInitStatus } from "@/hooks";
 import { AppRoutes } from "@/routes";
-import { useInitStatus } from "./hooks";
-import { ContainerLayout } from "./layouts";
 
 function App(): JSX.Element {
 	const isInit = useInitStatus();
 
-	return isInit ? (
-		<AppRoutes />
-	) : (
-		<ContainerLayout>
-			<CircularProgress size={80} thickness={4} />
-		</ContainerLayout>
-	);
+	return isInit ? <AppRoutes /> : <Loading />;
 }
 
 export { App };

@@ -1,5 +1,5 @@
 import React from "react";
-import { ChatWindow } from "@/features/chat";
+import { ChatWindow } from "@/features/chats";
 
 export const ChatRoutes = [
 	{

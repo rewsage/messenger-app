@@ -1,17 +1,24 @@
 import { useEffect, useState } from "react";
 import { onValue, ref } from "firebase/database";
-import { Conversations } from "@/features/chat/types";
+import { useAppSelector } from "@/app/hooks";
+import { Conversations } from "@/features/chats/types";
 import { db } from "@/services";
 import { DB_NODES } from "@/utils";
 
-function useConversations(uid: string) {
+function useConversations() {
+	const { uid } = useAppSelector((state) => state.user);
 	const [conversations, setConversations] = useState<Conversations>({});
 	console.log("conversations: ", conversations);
 
 	useEffect(() => {
-		return subscribeToConversations(uid, (data) => {
-			setConversations(data ?? {});
-		});
+		if (uid) {
+			return subscribeToConversations(uid, (data) => {
+				setConversations(data ?? {});
+			});
+		} else {
+			setConversations({});
+			return;
+		}
 	}, [uid]);
 
 	return conversations;

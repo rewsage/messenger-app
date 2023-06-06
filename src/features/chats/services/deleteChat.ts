@@ -1,5 +1,5 @@
 import { get, ref, update } from "firebase/database";
-import { Members } from "@/features/chat/types";
+import { Members } from "@/features/chats/types";
 import { db } from "@/services";
 import { DB_NODES } from "@/utils";
 

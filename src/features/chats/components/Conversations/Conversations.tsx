@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Add } from "@mui/icons-material";
+import { Add as AddIcon } from "@mui/icons-material";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 import {
 	Box,
@@ -10,9 +10,8 @@ import {
 	Typography,
 } from "@mui/material";
 import { useAppSelector } from "@/app/hooks";
-import { useChats } from "@/features/chat/hooks";
-import { createChat, deleteChat } from "@/features/chat/services";
-import { Chat } from "../Chat";
+import { Chat } from "@/features/chats/components/Chat";
+import { createChat, deleteChat } from "@/features/chats/services";
 
 interface Chat {
 	[key: string]: { title: string };
@@ -22,7 +21,7 @@ function Conversations(): JSX.Element {
 	const [companionUid, setCompanionUid] = useState("");
 
 	const currentUid = useAppSelector((state) => state.user.uid) as string;
-	const chats = useChats(currentUid);
+	const chats = useAppSelector((state) => state.chats);
 
 	const addChat = async () => {
 		try {
@@ -77,7 +76,7 @@ function Conversations(): JSX.Element {
 					color: "primary.main",
 				}}
 				onClick={addChat}>
-				<Add />
+				<AddIcon />
 			</IconButton>
 
 			{dialogs}

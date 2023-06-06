@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
-import { ChatRoutes } from "@/features/chat";
+import { ChatRoutes } from "@/features/chats";
 import { ErrorPage, HomePage } from "@/pages";
 import { PATHS } from "@/utils";
 
