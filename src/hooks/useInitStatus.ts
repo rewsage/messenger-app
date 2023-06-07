@@ -29,33 +29,4 @@ function useInitStatus() {
 	return isInit;
 }
 
-// function useUserData(uid: string) {
-// 	const [userData, setUserData] = useState<UserData | null>(null);
-// 	console.log("userData: ", userData);
-
-// 	useEffect(() => {
-// 		return subscribeToUserData(uid, (data) => {
-// 			setUserData(data);
-// 		});
-// 	}, [uid]);
-
-// 	return userData;
-// }
-
-// function subscribeToUserData(
-// 	uid: string,
-// 	callback: (data: UserData | null) => unknown
-// ) {
-//     if (uid === "") return (() => {return});
-
-// 	const userRef = ref(db, DB_NODES.USERS + uid);
-
-// 	const listener = onValue(userRef, (snapshot) => {
-// 		const data = snapshot.val() as UserData | null;
-// 		callback(data);
-// 	});
-
-// 	return listener;
-// }
-
 export { useInitStatus };

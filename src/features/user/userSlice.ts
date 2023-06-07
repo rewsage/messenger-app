@@ -3,11 +3,12 @@ import { UserData } from "@/types";
 
 interface UserState {
 	uid: string | null;
-	userData?: UserData;
+	userData: UserData | null;
 }
 
 const initialState: UserState = {
 	uid: null,
+	userData: null,
 };
 
 const userSlice = createSlice({
@@ -15,10 +16,14 @@ const userSlice = createSlice({
 	initialState,
 	reducers: {
 		changeUid(state, action: PayloadAction<string | null>) {
-			state.uid = action.payload;
+			const uid = action.payload;
+			return { ...initialState, uid };
+		},
+		updateUserData(state, action: PayloadAction<UserData | null>) {
+			state.userData = action.payload;
 		},
 	},
 });
 
 export const userReducer = userSlice.reducer;
-export const { changeUid } = userSlice.actions;
+export const { changeUid, updateUserData } = userSlice.actions;

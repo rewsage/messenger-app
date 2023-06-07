@@ -5,15 +5,19 @@ import { FormHelperText } from "@mui/material";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import {
+	AuthField,
+	EmailField,
+	Footer,
+	FormContainer,
+	Header,
+	PasswordField,
+	SubmitButton,
+} from "@/features/authentication/components";
 import { useFormSubmission } from "@/features/authentication/hooks";
 import { auth } from "@/services";
 import { writeUserData } from "@/services/writeUserData";
 import { PATHS } from "@/utils";
-import { AuthField, EmailField, PasswordField } from "../Fields";
-import { Footer } from "../Footer";
-import { FormContainer } from "../FormContainer";
-import { Header } from "../Header";
-import { SubmitButton } from "../SubmitButton";
 
 interface FormValues {
 	nickname: string;
@@ -36,7 +40,7 @@ function SignUp(): JSX.Element {
 				email,
 				password
 			);
-			await writeUserData(user.uid, nickname, email);
+			await writeUserData(user.uid, { nickname, email });
 		});
 
 		setSubmitting(false);

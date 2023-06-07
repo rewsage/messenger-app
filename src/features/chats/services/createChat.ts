@@ -16,7 +16,7 @@ async function createChat(currentUid: string, companionUid: string) {
 	if (userExists) {
 		await createConversation(currentUid, companionUid);
 		await set(ref(db, DB_NODES.CHATS + chatId), {
-			title: "Chat with",
+			title: `Chat with`,
 			members: {
 				[currentUid]: true,
 				[companionUid]: true,
@@ -32,13 +32,9 @@ async function createChat(currentUid: string, companionUid: string) {
 function createConversation(firstUid: string, secondUid: string) {
 	const chatId = getChatId(firstUid, secondUid);
 
-	const conversationData = {
-		smth: "const",
-	};
-
 	const updates = {
-		[firstUid + "/" + chatId]: conversationData,
-		[secondUid + "/" + chatId]: conversationData,
+		[firstUid + "/" + chatId]: true,
+		[secondUid + "/" + chatId]: true,
 	};
 
 	return update(ref(db, DB_NODES.CONVERSATIONS), updates);

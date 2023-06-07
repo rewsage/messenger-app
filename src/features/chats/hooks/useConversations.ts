@@ -1,41 +1,27 @@
 import { useEffect, useState } from "react";
-import { onValue, ref } from "firebase/database";
 import { useAppSelector } from "@/app/hooks";
 import { Conversations } from "@/features/chats/types";
-import { db } from "@/services";
+import { subscribeToNode } from "@/services/subscribeToNode";
 import { DB_NODES } from "@/utils";
 
 function useConversations() {
 	const { uid } = useAppSelector((state) => state.user);
 	const [conversations, setConversations] = useState<Conversations>({});
+	const conversationsPath = DB_NODES.CONVERSATIONS + uid;
+
 	console.log("conversations: ", conversations);
 
 	useEffect(() => {
 		if (uid) {
-			return subscribeToConversations(uid, (data) => {
+			return subscribeToNode<Conversations>(conversationsPath, (data) => {
 				setConversations(data ?? {});
 			});
 		} else {
-			setConversations({});
-			return;
+			return setConversations({});
 		}
-	}, [uid]);
+	}, [uid, conversationsPath]);
 
 	return conversations;
-}
-
-function subscribeToConversations(
-	uid: string,
-	callback: (data: Conversations | null) => unknown
-) {
-	const conversationsRef = ref(db, DB_NODES.CONVERSATIONS + uid);
-
-	const listener = onValue(conversationsRef, (snapshot) => {
-		const data = snapshot.val() as Conversations | null;
-		callback(data);
-	});
-
-	return listener;
 }
 
 export { useConversations };
